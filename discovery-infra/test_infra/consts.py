@@ -88,6 +88,7 @@ all_host_stages = [HostsProgressStages.START_INSTALLATION, HostsProgressStages.I
 class Events:
     REGISTERED_CLUSTER = "Registered cluster"
     SUCCESSFULLY_REGISTERED_CLUSTER = "Successfully registered cluster"
+    DISCOVERING = "\"discovering\""
     PENDING_FOR_INPUT = "to pending-for-input"
     GENERATED_IMAGE = "Generated image (SSH public key is set)"
     DOWNLOAD_IMAGE = "Started image download"
