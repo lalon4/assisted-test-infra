@@ -3,6 +3,7 @@ import time
 import scp
 import socket
 import logging
+from retry import retry
 
 logging.getLogger('paramiko').setLevel(logging.CRITICAL)
 
@@ -29,6 +30,7 @@ class SshConnection:
             self._ssh_client.close()
             self._ssh_client = None
 
+    @retry(exceptions=paramiko.SSHException, tries=2, delay=3)
     def connect(self, timeout=10):
         logging.info("Going to connect to ip %s", self._ip)
         self.wait_for_tcp_server()
