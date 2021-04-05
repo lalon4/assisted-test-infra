@@ -66,6 +66,10 @@ class NodeController(ABC):
         pass
 
     @abstractmethod
+    def get_test_disks_path(self, node_name: str):
+        pass
+
+    @abstractmethod
     def get_ingress_and_api_vips(self) -> dict:
         pass
 

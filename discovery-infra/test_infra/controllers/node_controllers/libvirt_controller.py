@@ -245,6 +245,17 @@ class LibvirtController(NodeController, ABC):
                 tempfile.gettempdir()), "File unexpectedly not in tmp, avoiding deletion to be on the safe side"
             os.remove(source_file)
 
+    def get_test_disks_path(self, node_name):
+        disk_files = []
+        node = self.libvirt_connection.lookupByName(node_name)
+        for test_disk in self._get_attached_test_disks(node):
+            source_file = self._get_disk_source_file(test_disk)
+            assert source_file is not None, "A test disk has no source file. This should never happen"
+            assert source_file.startswith(
+                tempfile.gettempdir()), "Disk File unexpectedly not in tmp"
+            disk_files.append(test_disk)
+        return disk_files
+
     def attach_interface(self, node_name, network_xml, target_interface=consts.TEST_TARGET_INTERFACE):
         """
         Create network and Interface. New interface will be attached to a given node.

@@ -1,6 +1,6 @@
 import logging
 
-from test_infra import consts
+from test_infra import consts, utils
 from test_infra.controllers.node_controllers import ssh
 
 
@@ -119,6 +119,13 @@ class Node:
         self.set_boot_order(cd_first)
         if start:
             self.start()
+
+    def detach_all_persistent_test_disks(self):
+        logging.info(f"Detaching persistent test disks, for node {self.name}")
+        disks = self.node_controller.get_test_disks_path(self.name)
+        for disk in disks:
+            command = f"virsh detach-disk --domain {self.name} {disk} --persistent --config --live"
+            utils.run_command(command)
 
     def get_host_id(self):
         return self.node_controller.get_host_id(self.name)
